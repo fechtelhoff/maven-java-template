@@ -21,6 +21,11 @@ mvn archetype:generate \
   -DartifactId=<my-artifactId>
 ```
 
+Beispiel
+```
+mvn archetype:generate -DarchetypeGroupId=de.fechtelhoff -DarchetypeArtifactId=maven-template -DarchetypeVersion=1.0-SNAPSHOT -DgroupId=de.test -DartifactId=test
+``````
+
 ---
 ### Anmerkungen
 

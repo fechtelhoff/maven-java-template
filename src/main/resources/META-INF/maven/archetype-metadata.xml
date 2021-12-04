@@ -15,8 +15,14 @@
 		<fileSet filtered="true" encoding="UTF-8">
 			<directory />
 			<includes>
-				<include>gitignore</include>
 				<include>Readme.md</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory />
+			<includes>
+				<include>.gitignore</include>
+				<include>gitignore</include>
 				<include>Note.txt</include>
 			</includes>
 		</fileSet>
