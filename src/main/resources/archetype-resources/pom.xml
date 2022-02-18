@@ -21,47 +21,75 @@
 		<project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
 
 		<!-- Java Version -->
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 
 		<!-- Dependency Version -->
 		<version.apache.commons-lang>3.12.0</version.apache.commons-lang>
-		<version.slf4j>1.7.32</version.slf4j>
+		<version.slf4j>1.7.36</version.slf4j>
 		<version.junit>5.8.2</version.junit>
 
 		<!-- Plugin Version -->
-		<version.compiler.plugin>3.8.1</version.compiler.plugin>
+		<version.compiler.plugin>3.9.0</version.compiler.plugin>
 		<version.assembly.plugin>3.3.0</version.assembly.plugin>
 		<version.surefire.plugin>3.0.0-M5</version.surefire.plugin>
+		<version.versions.plugin>2.9.0</version.versions.plugin>
 	</properties>
 
-	<dependencies>
-		<!-- Utils -->
-		<!-- https://commons.apache.org -->
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>${version.apache.commons-lang}</version>
-		</dependency>
+	<dependencyManagement>
+		<dependencies>
+			<!-- Utils -->
+			<!-- https://commons.apache.org -->
+			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${version.apache.commons-lang}</version>
+			</dependency>
 
+			<!-- Logging -->
+			<!-- http://www.slf4j.org -->
+			<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${version.slf4j}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>${version.slf4j}</version>
+			</dependency>
+
+			<!-- JUnit 5 -->
+			<!-- https://junit.org/junit5 -->
+			<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter</artifactId>
+				<version>${version.junit}</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
 		<!-- Logging -->
-		<!-- http://www.slf4j.org -->
-		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>${version.slf4j}</version>
 		</dependency>
 
 		<!-- JUnit 5 -->
-		<!-- https://junit.org/junit5 -->
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>${version.junit}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -69,31 +97,69 @@
 	<build>
 		<finalName>${project.artifactId}</finalName>
 
+		<pluginManagement>
+			<plugins>
+				<!-- Compiler -->
+				<!-- https://maven.apache.org/plugins/maven-compiler-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+				<plugin>
+					<!-- <inherited>true</inherited> -->
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${version.compiler.plugin}</version>
+					<configuration>
+						<release>${java.version}</release>
+						<encoding>${project.encoding}</encoding>
+						<showWarnings>true</showWarnings>
+						<showDeprecation>true</showDeprecation>
+					</configuration>
+				</plugin>
+
+				<!-- Assembly -->
+				<!-- https://maven.apache.org/plugins/maven-assembly-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${version.assembly.plugin}</version>
+				</plugin>
+
+				<!-- Surefire -->
+				<!-- https://maven.apache.org/surefire/maven-surefire-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${version.surefire.plugin}</version>
+				</plugin>
+
+				<!-- Versions -->
+				<!-- https://www.mojohaus.org/versions-maven-plugin/index.html -->
+				<!-- https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin -->
+				<!-- Aufruf z.B. über "mvn versions:display-property-updates" -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>${version.versions.plugin}</version>
+					<configuration>
+						<!--suppress UnresolvedMavenProperty -->
+						<rulesUri>file:///${session.executionRootDirectory}/maven-version-rules.xml</rulesUri>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 			<!-- Compiler -->
-			<!-- https://maven.apache.org/plugins/maven-compiler-plugin -->
-			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
 			<plugin>
-				<!-- <inherited>true</inherited> -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${version.compiler.plugin}</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<encoding>${project.encoding}</encoding>
-					<showWarnings>true</showWarnings>
-					<showDeprecation>true</showDeprecation>
-				</configuration>
 			</plugin>
 
 			<!-- Assembly -->
-			<!-- https://maven.apache.org/plugins/maven-assembly-plugin -->
-			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>${version.assembly.plugin}</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -119,12 +185,9 @@
 			</plugin>
 
 			<!-- Surefire -->
-			<!-- https://maven.apache.org/surefire/maven-surefire-plugin -->
-			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${version.surefire.plugin}</version>
 			</plugin>
 		</plugins>
 	</build>

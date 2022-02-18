@@ -24,6 +24,7 @@
 				<include>.gitignore</include>
 				<include>gitignore</include>
 				<include>Note.txt</include>
+				<include>maven-version-rules.xml</include>
 			</includes>
 		</fileSet>
 
