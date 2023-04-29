@@ -28,14 +28,18 @@
 
 		<!-- Dependency Version -->
 		<version.apache.commons-lang>3.12.0</version.apache.commons-lang>
-		<version.slf4j>1.7.36</version.slf4j>
-		<version.junit>5.9.0-M1</version.junit>
+		<version.slf4j>2.0.7</version.slf4j>
+		<version.junit>5.9.3</version.junit>
 
 		<!-- Plugin Version -->
-		<version.compiler.plugin>3.10.1</version.compiler.plugin>
-		<version.assembly.plugin>3.4.1</version.assembly.plugin>
-		<version.surefire.plugin>3.0.0-M7</version.surefire.plugin>
-		<version.versions.plugin>2.11.0</version.versions.plugin>
+		<version.assembly.plugin>3.5.0</version.assembly.plugin>
+		<version.compiler.plugin>3.11.0</version.compiler.plugin>
+		<version.jar.plugin>3.3.0</version.jar.plugin>
+		<version.javadoc.plugin>3.4.1</version.javadoc.plugin>
+		<version.resources.plugin>3.3.1</version.resources.plugin>
+		<version.source.plugin>3.2.1</version.source.plugin>
+		<version.surefire.plugin>3.0.0</version.surefire.plugin>
+		<version.versions.plugin>2.15.0</version.versions.plugin>
 	</properties>
 
 	<dependencyManagement>
@@ -98,8 +102,54 @@
 	<build>
 		<finalName>${project.artifactId}</finalName>
 
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<testResources>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+
 		<pluginManagement>
 			<plugins>
+				<!-- Resources -->
+				<!-- https://maven.apache.org/plugins/maven-resources-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${version.resources.plugin}</version>
+					<configuration>
+						<propertiesEncoding>${project.encoding}</propertiesEncoding>
+					</configuration>
+				</plugin>
+
 				<!-- Compiler -->
 				<!-- https://maven.apache.org/plugins/maven-compiler-plugin -->
 				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
@@ -116,6 +166,54 @@
 					</configuration>
 				</plugin>
 
+				<!-- Jar -->
+				<!-- https://maven.apache.org/plugins/maven-jar-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${version.jar.plugin}</version>
+				</plugin>
+
+				<!-- Source -->
+				<!-- https://maven.apache.org/plugins/maven-source-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${version.source.plugin}</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar-no-fork</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- JavaDoc -->
+				<!-- https://maven.apache.org/plugins/maven-javadoc-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${version.javadoc.plugin}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>javadoc</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<noqualifier>all</noqualifier>
+						<failOnError>false</failOnError>
+						<doclint>none</doclint>
+						<show>protected</show>
+					</configuration>
+				</plugin>
+
 				<!-- Assembly -->
 				<!-- https://maven.apache.org/plugins/maven-assembly-plugin -->
 				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
@@ -123,6 +221,28 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>${version.assembly.plugin}</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+							<configuration>
+								<archive>
+									<manifest>
+										<mainClass>${appMainClass}</mainClass>
+									</manifest>
+									<manifestEntries>
+										<Program-Version>${project.version}</Program-Version>
+										<Multi-Release>true</Multi-Release>
+									</manifestEntries>
+								</archive>
+								<descriptorRefs>
+									<descriptorRef>jar-with-dependencies</descriptorRef>
+								</descriptorRefs>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 
 				<!-- Surefire -->
@@ -157,32 +277,16 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
 
+			<!-- Source -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+
 			<!-- Assembly -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<archive>
-								<manifest>
-									<mainClass>${appMainClass}</mainClass>
-								</manifest>
-								<manifestEntries>
-									<Program-Version>${project.version}</Program-Version>
-									<Multi-Release>true</Multi-Release>
-								</manifestEntries>
-							</archive>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 
 			<!-- Surefire -->
