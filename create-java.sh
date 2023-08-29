@@ -2,31 +2,37 @@
 
 echo
 echo "###############################################################################"
-echo "# Start"
+echo "# Start - $(basename $0) ($0)"
 echo "###############################################################################"
 echo
 
 if [ -z "$1" ]
 then
-  ARTIFACT="test"
+  GROUP="de.fechtelhoff"
 else
-  ARTIFACT="$1"
+  GROUP="$1"
 fi
 
 if [ -z "$2" ]
 then
-  GROUP="de.fechtelhoff"
+  ARTIFACT="test"
 else
-  GROUP="$2"
+  ARTIFACT="$2"
+fi
+
+if [ -z "$3" ]
+then
+  PACKAGE="${GROUP}.${ARTIFACT}"
+else
+  PACKAGE="$3"
 fi
 
 VERSION="1.0-SNAPSHOT"
-PACKAGE="${GROUP}"."${ARTIFACT}"
 
-echo "Artifact ID = ${ARTIFACT}"
-echo "Group ID = ${GROUP}"
-echo "Version = ${VERSION}"
-echo "Package = ${PACKAGE}"
+echo "Group    = ${GROUP}"
+echo "Artifact = ${ARTIFACT}"
+echo "Version  = ${VERSION}"
+echo "Package  = ${PACKAGE}"
 echo
 
 mvn archetype:generate --batch-mode \

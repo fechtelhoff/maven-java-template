@@ -26,20 +26,28 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 
-		<!-- Dependency Version -->
-		<version.apache.commons-lang>3.12.0</version.apache.commons-lang>
+		<!-- ================================================================================== -->
+		<!-- Dependencies -->
+		<!-- ================================================================================== -->
+		<version.apache.commons.lang>3.13.0</version.apache.commons.lang>
 		<version.slf4j>2.0.7</version.slf4j>
-		<version.junit>5.9.3</version.junit>
 
-		<!-- Plugin Version -->
-		<version.assembly.plugin>3.5.0</version.assembly.plugin>
+		<version.junit>5.10.0</version.junit>
+
+		<!-- ================================================================================== -->
+		<!-- Plugins -->
+		<!-- ================================================================================== -->
+		<!-- Maven Plugins -->
+		<version.assembly.plugin>3.6.0</version.assembly.plugin>
 		<version.compiler.plugin>3.11.0</version.compiler.plugin>
 		<version.jar.plugin>3.3.0</version.jar.plugin>
-		<version.javadoc.plugin>3.4.1</version.javadoc.plugin>
+		<version.javadoc.plugin>3.5.0</version.javadoc.plugin>
 		<version.resources.plugin>3.3.1</version.resources.plugin>
-		<version.source.plugin>3.2.1</version.source.plugin>
-		<version.surefire.plugin>3.0.0</version.surefire.plugin>
-		<version.versions.plugin>2.15.0</version.versions.plugin>
+		<version.source.plugin>3.3.0</version.source.plugin>
+		<version.surefire.plugin>3.1.2</version.surefire.plugin>
+
+		<!-- Other Plugins -->
+		<version.versions.plugin>2.16.0</version.versions.plugin>
 	</properties>
 
 	<dependencyManagement>
@@ -50,7 +58,7 @@
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>${version.apache.commons-lang}</version>
+				<version>${version.apache.commons.lang}</version>
 			</dependency>
 
 			<!-- Logging -->

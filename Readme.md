@@ -37,4 +37,5 @@ und muss dort manuell umbenannt werden.
 ### Weitere Links
 - [Creating Your Own Maven Archetype in 5 Simple Steps](https://rieckpil.de/create-your-own-maven-archetype-in-5-simple-steps)
 
+- [Change package property in Maven Archetype (StackOverflow)](https://stackoverflow.com/questions/39080569/change-package-property-in-maven-archetype)
 ---

@@ -6,9 +6,19 @@
 	name="maven-template">
 
 	<fileSets>
-		<!-- Source-->
-		<fileSet filtered="true" encoding="UTF-8">
-			<directory>src</directory>
+		<!-- Main Sources-->
+		<fileSet filtered="true" packaged="true" encoding="UTF-8">
+			<directory>src/main/java</directory>
+		</fileSet>
+
+		<!-- Test Sources-->
+		<fileSet filtered="true" packaged="true" encoding="UTF-8">
+			<directory>src/test/java</directory>
+		</fileSet>
+
+		<!-- Resources Folder -->
+		<fileSet filtered="true" packaged="true" encoding="UTF-8">
+			<directory>src/main/resources</directory>
 		</fileSet>
 
 		<!-- Root -->
