@@ -1,6 +1,6 @@
-# Maven Template
+# Maven Java Template
 
-Ein eigener Maven Archetype.
+Ein eigener Maven Archetype für ein einfaches Grundgerüst einer Java-Applikation.
 
 Anleitung s. [Guide to Creating Archetypes](https://maven.apache.org/guides/mini/guide-creating-archetypes.html).
 
@@ -14,8 +14,8 @@ mvn install
 Nutzen über die IDE oder über:
 ```
 mvn archetype:generate \
-  -DarchetypeGroupId=de.fechtelhoff \
-  -DarchetypeArtifactId=maven-template \
+  -DarchetypeGroupId=com.example \
+  -DarchetypeArtifactId=maven-java-template \
   -DarchetypeVersion=1.0-SNAPSHOT \
   -DgroupId=<my.groupid> \
   -DartifactId=<my-artifactId>
@@ -23,7 +23,7 @@ mvn archetype:generate \
 
 Beispiel
 ```
-mvn archetype:generate -DarchetypeGroupId=de.fechtelhoff -DarchetypeArtifactId=maven-template -DarchetypeVersion=1.0-SNAPSHOT -DgroupId=de.test -DartifactId=test
+mvn archetype:generate -DarchetypeGroupId=com.example -DarchetypeArtifactId=maven-java-template -DarchetypeVersion=1.0-SNAPSHOT -DgroupId=my.groupid -DartifactId=test
 ``````
 
 ---

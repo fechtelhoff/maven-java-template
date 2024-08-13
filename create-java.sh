@@ -28,7 +28,7 @@ esac
 
 if [ -z "$1" ]
 then
-  GROUP="de.fechtelhoff"
+  GROUP="com.example"
 else
   GROUP="$1"
 fi
@@ -57,7 +57,7 @@ echo
 
 mvn archetype:generate --batch-mode \
   -DarchetypeGroupId=de.fechtelhoff \
-  -DarchetypeArtifactId=maven-template \
+  -DarchetypeArtifactId=maven-java-template \
   -DarchetypeVersion=1.0-SNAPSHOT \
   -DgroupId="${GROUP}" \
   -DartifactId="${ARTIFACT}" \
