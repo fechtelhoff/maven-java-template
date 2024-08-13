@@ -16,7 +16,7 @@
 		<project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
 
 		<!-- Java Version -->
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 
@@ -24,6 +24,7 @@
 		<version.archetype-packaging.extension>3.2.1</version.archetype-packaging.extension>
 		<version.archetype.plugin>3.2.1</version.archetype.plugin>
 		<version.resources.plugin>3.3.1</version.resources.plugin>
+		<version.versions.plugin>2.17.1</version.versions.plugin>
 	</properties>
 
 	<build>
@@ -52,6 +53,20 @@
 					<version>${version.archetype.plugin}</version>
 					<configuration>
 						<useDefaultExcludes>false</useDefaultExcludes>
+					</configuration>
+				</plugin>
+
+				<!-- Versions -->
+				<!-- https://www.mojohaus.org/versions-maven-plugin/index.html -->
+				<!-- https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin -->
+				<!-- Aufruf z.B. über "mvn versions:display-property-updates" -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>${version.versions.plugin}</version>
+					<configuration>
+						<!--suppress UnresolvedMavenProperty -->
+						<rulesUri>file:///${session.executionRootDirectory}/maven-version-rules.xml</rulesUri>
 					</configuration>
 				</plugin>
 			</plugins>

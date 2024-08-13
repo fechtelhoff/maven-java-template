@@ -14,7 +14,7 @@
 
 	<properties>
 		<!-- Application -->
-		<appMainClass>de.fechtelhoff.Start</appMainClass>
+		<appMainClass>${package}.Start</appMainClass>
 
 		<!-- Encoding  -->
 		<project.encoding>UTF-8</project.encoding>
@@ -22,32 +22,42 @@
 		<project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
 
 		<!-- Java Version -->
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
+
+		<!-- Test Execution -->
+		<skipUTs>false</skipUTs>
+		<skipITs>false</skipITs>
 
 		<!-- ================================================================================== -->
 		<!-- Dependencies -->
 		<!-- ================================================================================== -->
-		<version.apache.commons.lang>3.14.0</version.apache.commons.lang>
-		<version.slf4j>2.0.12</version.slf4j>
+		<version.apache.commons.lang>3.16.0</version.apache.commons.lang>
+		<version.slf4j>2.0.16</version.slf4j>
 
-		<version.junit>5.10.2</version.junit>
+		<version.junit>5.10.3</version.junit>
+		<version.assertj>3.26.3</version.assertj>
+		<version.mockito>5.12.0</version.mockito> <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+		<version.byte-buddy>1.14.15</version.byte-buddy> <!-- Wird in genau dieser Version für Mockito benötigt. -->
 
 		<!-- ================================================================================== -->
 		<!-- Plugins -->
 		<!-- ================================================================================== -->
 		<!-- Maven Plugins -->
-		<version.assembly.plugin>3.6.0</version.assembly.plugin>
-		<version.compiler.plugin>3.12.1</version.compiler.plugin>
-		<version.jar.plugin>3.3.0</version.jar.plugin>
-		<version.javadoc.plugin>3.6.3</version.javadoc.plugin>
+		<version.assembly.plugin>3.7.1</version.assembly.plugin>
+		<version.compiler.plugin>3.13.0</version.compiler.plugin>
+		<version.failsafe.plugin>3.3.1</version.failsafe.plugin>
+		<version.jar.plugin>3.4.2</version.jar.plugin>
+		<version.javadoc.plugin>3.8.0</version.javadoc.plugin>
 		<version.resources.plugin>3.3.1</version.resources.plugin>
-		<version.source.plugin>3.3.0</version.source.plugin>
-		<version.surefire.plugin>3.2.5</version.surefire.plugin>
+		<version.source.plugin>3.3.1</version.source.plugin>
+		<version.surefire.plugin>3.3.1</version.surefire.plugin>
 
 		<!-- Other Plugins -->
-		<version.versions.plugin>2.16.2</version.versions.plugin>
+		<version.jacoco.plugin>0.8.12</version.jacoco.plugin>
+		<version.owasp.plugin>10.0.3</version.owasp.plugin>
+		<version.versions.plugin>2.17.1</version.versions.plugin>
 	</properties>
 
 	<dependencyManagement>
@@ -83,6 +93,43 @@
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter</artifactId>
 				<version>${version.junit}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!-- AssertJ -->
+			<!-- https://assertj.github.io/doc -->
+			<!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
+			<dependency>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-bom</artifactId>
+				<version>${version.assertj}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+
+			<!-- Mockito -->
+			<!-- https://site.mockito.org -->
+			<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${version.mockito}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-junit-jupiter</artifactId>
+				<version>${version.mockito}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!-- Byte Buddy -->
+			<!-- Wird für Mockito benötigt! Siehe https://howtodoinjava.com/mockito/plugin-mockmaker-error -->
+			<!-- https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy -->
+			<dependency>
+				<groupId>net.bytebuddy</groupId>
+				<artifactId>byte-buddy</artifactId>
+				<version>${version.byte-buddy}</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
@@ -260,6 +307,45 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${version.surefire.plugin}</version>
+					<configuration>
+						<skipTests>${skipUTs}</skipTests>
+					</configuration>
+				</plugin>
+
+				<!-- Failsafe -->
+				<!-- https://maven.apache.org/surefire/maven-failsafe-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-failsafe-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>${version.failsafe.plugin}</version>
+					<configuration>
+						<skipTests>${skipITs}</skipTests>
+					</configuration>
+				</plugin>
+
+				<!-- JaCoCo (Code Coverage) -->
+				<!-- https://www.jacoco.org/ -->
+				<!-- https://www.jacoco.org/jacoco/trunk/doc/maven.html -->
+				<!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${version.jacoco.plugin}</version>
+					<executions>
+						<execution>
+							<id>default-prepare-agent</id>
+							<goals>
+								<goal>prepare-agent</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>default-report</id>
+							<goals>
+								<goal>report</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 
 				<!-- Versions -->
@@ -271,8 +357,26 @@
 					<artifactId>versions-maven-plugin</artifactId>
 					<version>${version.versions.plugin}</version>
 					<configuration>
+						<excludeProperties>version.byte-buddy</excludeProperties>
 						<!--suppress UnresolvedMavenProperty -->
 						<rulesUri>file:///${session.executionRootDirectory}/maven-version-rules.xml</rulesUri>
+					</configuration>
+				</plugin>
+
+				<!-- Dependency Check (OWASP) -->
+				<!-- https://jeremylong.github.io/DependencyCheck/dependency-check-maven/index.html -->
+				<!-- https://mvnrepository.com/artifact/org.owasp/dependency-check-maven -->
+				<!-- Aufruf z.B. über: "mvn dependency-check:aggregate" -->
+				<plugin>
+					<groupId>org.owasp</groupId>
+					<artifactId>dependency-check-maven</artifactId>
+					<version>${version.owasp.plugin}</version>
+					<configuration>
+						<formats>
+							<format>html</format>
+							<format>json</format>
+						</formats>
+						<archiveAnalyzerEnabled>false</archiveAnalyzerEnabled>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -301,6 +405,18 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+
+			<!-- Failsafe -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+			</plugin>
+
+			<!-- JaCoCo (Code Coverage) -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

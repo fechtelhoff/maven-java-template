@@ -7,6 +7,7 @@ class StartTest {
 
 	@Test
 	void test() {
+		Assertions.assertDoesNotThrow(() -> new Start());
 		Assertions.assertDoesNotThrow(() -> Start.main(null));
 	}
 }
