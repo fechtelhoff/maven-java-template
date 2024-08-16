@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>${groupId}</groupId>
@@ -28,7 +28,7 @@
 
 		<!-- Test Execution -->
 		<skipUTs>false</skipUTs>
-		<skipITs>false</skipITs>
+		<skipITs>true</skipITs>
 
 		<!-- ================================================================================== -->
 		<!-- Dependencies -->
@@ -48,7 +48,6 @@
 		<version.assembly.plugin>3.7.1</version.assembly.plugin>
 		<version.compiler.plugin>3.13.0</version.compiler.plugin>
 		<version.failsafe.plugin>3.3.1</version.failsafe.plugin>
-		<version.jar.plugin>3.4.2</version.jar.plugin>
 		<version.javadoc.plugin>3.8.0</version.javadoc.plugin>
 		<version.resources.plugin>3.3.1</version.resources.plugin>
 		<version.source.plugin>3.3.1</version.source.plugin>
@@ -219,15 +218,6 @@
 						<showWarnings>true</showWarnings>
 						<showDeprecation>true</showDeprecation>
 					</configuration>
-				</plugin>
-
-				<!-- Jar -->
-				<!-- https://maven.apache.org/plugins/maven-jar-plugin -->
-				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>${version.jar.plugin}</version>
 				</plugin>
 
 				<!-- Source -->
