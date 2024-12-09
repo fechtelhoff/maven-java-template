@@ -33,13 +33,13 @@
 		<!-- ================================================================================== -->
 		<!-- Dependencies -->
 		<!-- ================================================================================== -->
-		<version.apache.commons.lang>3.16.0</version.apache.commons.lang>
+		<version.apache.commons.lang>3.17.0</version.apache.commons.lang>
 		<version.slf4j>2.0.16</version.slf4j>
 
-		<version.junit>5.10.3</version.junit>
+		<version.junit>5.11.3</version.junit>
 		<version.assertj>3.26.3</version.assertj>
-		<version.mockito>5.12.0</version.mockito> <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
-		<version.byte-buddy>1.14.15</version.byte-buddy> <!-- Wird in genau dieser Version für Mockito benötigt. -->
+		<version.mockito>5.14.2</version.mockito> <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+		<version.byte-buddy>1.15.4</version.byte-buddy> <!-- Wird in genau dieser Version für Mockito benötigt. -->
 
 		<!-- ================================================================================== -->
 		<!-- Plugins -->
@@ -47,16 +47,16 @@
 		<!-- Maven Plugins -->
 		<version.assembly.plugin>3.7.1</version.assembly.plugin>
 		<version.compiler.plugin>3.13.0</version.compiler.plugin>
-		<version.failsafe.plugin>3.3.1</version.failsafe.plugin>
-		<version.javadoc.plugin>3.8.0</version.javadoc.plugin>
+		<version.failsafe.plugin>3.5.2</version.failsafe.plugin>
+		<version.javadoc.plugin>3.11.2</version.javadoc.plugin>
 		<version.resources.plugin>3.3.1</version.resources.plugin>
 		<version.source.plugin>3.3.1</version.source.plugin>
-		<version.surefire.plugin>3.3.1</version.surefire.plugin>
+		<version.surefire.plugin>3.5.2</version.surefire.plugin>
 
 		<!-- Other Plugins -->
 		<version.jacoco.plugin>0.8.12</version.jacoco.plugin>
-		<version.owasp.plugin>10.0.3</version.owasp.plugin>
-		<version.versions.plugin>2.17.1</version.versions.plugin>
+		<version.owasp.plugin>11.1.1</version.owasp.plugin>
+		<version.versions.plugin>2.18.0</version.versions.plugin>
 	</properties>
 
 	<dependencyManagement>
@@ -299,6 +299,12 @@
 					<version>${version.surefire.plugin}</version>
 					<configuration>
 						<skipTests>${skipUTs}</skipTests>
+						<includes>
+							<include>**/*Test.java</include>
+						</includes>
+						<excludes>
+							<exclude>**/*IntTest.java</exclude>
+						</excludes>
 					</configuration>
 				</plugin>
 
@@ -309,9 +315,21 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
 					<version>${version.failsafe.plugin}</version>
-					<configuration>
-						<skipTests>${skipITs}</skipTests>
-					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+							<configuration>
+								<skipTests>${skipITs}</skipTests>
+								<excludes combine.self="override" />
+								<includes combine.self="override">
+									<include>**/*IntTest.java</include>
+								</includes>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 
 				<!-- JaCoCo (Code Coverage) -->
